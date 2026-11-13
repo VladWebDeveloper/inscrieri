@@ -355,6 +355,9 @@ function openForm(code){
  }
  html+=field('email',item.kind==='echipa'?'E-mailul liderului *':'E-mail *','email','nume@exemplu.com',false,'maxlength="180" autocomplete="email"');
  html+=field('phone',item.kind==='echipa'?'Telefonul liderului *':'Telefon *','tel','+373...',false,'maxlength="25" autocomplete="tel"');
+  if(code==='film'){
+   html+='<div class="field wide"><label for="f_movieSuggestion">Ce film sau gen ai vrea să vizionăm? *</label><input id="f_movieSuggestion" name="movieSuggestion" type="text" required minlength="2" maxlength="160" placeholder="Ex.: Interstellar, comedie, acțiune, romantic…" autocomplete="off" aria-describedby="movieHelp"><span class="help" id="movieHelp">Poți propune titlul unui film sau un gen (comedie, acțiune, romantic, horror etc.).</span></div>';
+  }
  html+='<div class="field wide"><label for="f_note">Mesaj pentru organizatori (opțional)</label><textarea name="note" id="f_note" maxlength="350" placeholder="Observații sau necesități speciale"></textarea></div>';
  html+='</div><label class="consent"><input name="consent" type="checkbox" required><span>Accept utilizarea datelor de înscriere exclusiv pentru organizarea activității și comunicarea cu participanții.</span></label><div style="display:none" aria-hidden="true"><input name="website" type="text" tabindex="-1" autocomplete="off"></div><div id="formError"></div><button type="submit" class="primary" id="send">Confirmă înscrierea</button></form></div>';
  $('formRoot').innerHTML=html;
@@ -375,7 +378,7 @@ function refreshColors(){
 function sendForm(e){
  e.preventDefault();if(!selected)return;
  const form=e.currentTarget;const data=new FormData(form);
- const payload={code:selected.code,email:data.get('email'),phone:data.get('phone'),note:data.get('note'),consent:data.get('consent')==='on',website:data.get('website')};
+ const payload={code:selected.code,email:data.get('email'),phone:data.get('phone'),note:data.get('note'),consent:data.get('consent')==='on',website:data.get('website'),movieSuggestion:selected.code==='film'?(data.get('movieSuggestion')||''):''};
  if(selected.kind==='echipa'){
   payload.teamName=data.get('teamName');
   payload.members=Array.from({length:selected.teamSize},(_,i)=>data.get('member'+i));
